@@ -6,3 +6,10 @@ body {
 .Layout {
   min-height: 100vh;
 }
+
+.logo {
+  color: rgb(226, 226, 226);
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 12px;
+}

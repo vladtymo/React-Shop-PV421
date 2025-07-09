@@ -28,7 +28,9 @@ const Layout = () => {
     return (
         <LayoutAntd className='Layout'>
             <Header style={{ display: 'flex', alignItems: 'center' }}>
-                <div className="demo-logo" />
+                <div className='logo'>
+                    <h2>Shop App</h2>
+                </div>
                 <Menu
                     theme="dark"
                     mode="horizontal"
