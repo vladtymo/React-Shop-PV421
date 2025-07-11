@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, message, Popconfirm, Space, Table, Tag } from 'antd';
 import { deleteProduct } from '../services/product.service';
+import { useMessage } from '../hooks/useMessage';
 
 const getColumns = (onDelete) => [
     {
@@ -60,7 +61,8 @@ const api = "https://fakestoreapi.com/products";
 const ProductList = () => {
 
     const [products, setProducts] = React.useState([]);
-    const [messageApi, contextHolder] = message.useMessage();
+    // const [messageApi, contextHolder] = message.useMessage();
+    const { contextHolder, showSuccess, showError } = useMessage();
 
     useEffect(() => {
         fetchProducts();
@@ -71,17 +73,14 @@ const ProductList = () => {
         if (res) {
             setProducts(products.filter(product => product.id !== id));
 
-            messageApi.open({
-                type: 'success',
-                content: 'Product deleted successfully!',
-            });
+            // messageApi.open({
+            //     type: 'success',
+            //     content: 'Product deleted successfully!',
+            // });
+            showSuccess('Product deleted successfully!');
         }
-        else {
-            messageApi.open({
-                type: 'error',
-                content: 'Failed to delete product!',
-            });
-        }
+        else
+            showError('Failed to delete product!');
     };
 
     async function fetchProducts() {
