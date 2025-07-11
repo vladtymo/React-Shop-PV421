@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Button, message, Popconfirm, Space, Table, Tag } from 'antd';
+import { deleteProduct } from '../services/product.service';
 
-const columns = [
+const getColumns = (onDelete) => [
     {
         title: 'Image',
         dataIndex: 'image',
@@ -32,6 +33,26 @@ const columns = [
         key: 'rating',
         render: text => <span>{text.rate}</span>,
     },
+    {
+        title: 'Actions',
+        // dataIndex: 'rating',
+        key: 'actions',
+        render: (_, record) => (
+            <Space size="middle">
+                <Button type="primary">Edit</Button>
+                <Popconfirm
+                    title="Delete the product"
+                    description={`Are you sure to delete ${record.title}?`}
+                    onConfirm={() => onDelete(record.id)}
+                    // onCancel={cancel}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button danger>Delete</Button>
+                </Popconfirm>
+            </Space>
+        ),
+    },
 ];
 
 const api = "https://fakestoreapi.com/products";
@@ -39,10 +60,29 @@ const api = "https://fakestoreapi.com/products";
 const ProductList = () => {
 
     const [products, setProducts] = React.useState([]);
+    const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(() => {
         fetchProducts();
     }, []);
+
+    const onProductDelete = async (id) => {
+        const res = await deleteProduct(id);
+        if (res) {
+            setProducts(products.filter(product => product.id !== id));
+
+            messageApi.open({
+                type: 'success',
+                content: 'Product deleted successfully!',
+            });
+        }
+        else {
+            messageApi.open({
+                type: 'error',
+                content: 'Failed to delete product!',
+            });
+        }
+    };
 
     async function fetchProducts() {
         const res = await fetch(api);
@@ -52,8 +92,9 @@ const ProductList = () => {
 
     return (
         <>
+            {contextHolder}
             <h2>Product List</h2>
-            <Table columns={columns} dataSource={products} />
+            <Table columns={getColumns(onProductDelete)} dataSource={products} rowKey={i => i.id} />
         </>
     )
 };
