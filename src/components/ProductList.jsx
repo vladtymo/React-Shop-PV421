@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, message, Popconfirm, Space, Table, Tag } from 'antd';
 import { deleteProduct } from '../services/product.service';
 import { useMessage } from '../hooks/useMessage';
+import { Link } from 'react-router-dom';
 
 const getColumns = (onDelete) => [
     {
@@ -93,6 +94,10 @@ const ProductList = () => {
         <>
             {contextHolder}
             <h2>Product List</h2>
+
+            <Link to="/create">
+                <Button type="primary" style={{ marginBottom: '12px' }}>Create New Product</Button>
+            </Link>
             <Table columns={getColumns(onProductDelete)} dataSource={products} rowKey={i => i.id} />
         </>
     )

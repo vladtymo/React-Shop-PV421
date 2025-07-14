@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './components/Home'
 import ProductList from './components/ProductList'
 import NoPage from './components/NoPage'
+import ProductForm from './components/ProductForm'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="products" element={<ProductList />} />
+          <Route path="create" element={<ProductForm />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
