@@ -17,6 +17,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="products" element={<ProductList />} />
           <Route path="create" element={<ProductForm />} />
+          <Route path="edit/:id" element={<ProductForm />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

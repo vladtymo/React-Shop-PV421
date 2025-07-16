@@ -41,7 +41,10 @@ const getColumns = (onDelete) => [
         key: 'actions',
         render: (_, record) => (
             <Space size="middle">
-                <Button type="primary">Edit</Button>
+                <Link to={`/edit/${record.id}`}>
+                    <Button type="primary">Edit</Button>
+                </Link>
+
                 <Popconfirm
                     title="Delete the product"
                     description={`Are you sure to delete ${record.title}?`}

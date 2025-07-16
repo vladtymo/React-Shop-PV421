@@ -39,5 +39,25 @@ const createProduct = async (model) => {
     }
 }
 
-export { deleteProduct, loadCategories, createProduct }
+const editProduct = async (model) => {
+    try {
+        const res = await axios.put(`https://fakestoreapi.com/products/${model.id}`, model);
+        return res.data;
+    } catch (error) {
+        console.error('Error updating product:', error);
+        return null;
+    }
+}
+
+const getProductById = async (id) => {
+    try {
+        const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
+        return res.data;
+    } catch (error) {
+        console.error('Error getting product by ID', error);
+        return null;
+    }
+}
+
+export { deleteProduct, loadCategories, createProduct, getProductById, editProduct }
 

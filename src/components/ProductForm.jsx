@@ -9,8 +9,9 @@ import {
     Space,
     Upload,
 } from 'antd';
-import { createProduct, loadCategories } from '../services/product.service';
+import { createProduct, editProduct, getProductById, loadCategories } from '../services/product.service';
 import { useMessage } from '../hooks/useMessage';
+import { useNavigate, useParams } from 'react-router-dom';
 const { TextArea } = Input;
 
 const normFile = (e) => {
@@ -24,41 +25,79 @@ const tailLayout = {
 const ProductForm = () => {
     const [categories, setCategories] = useState([]);
     const { contextHolder, showSuccess, showError } = useMessage();
+    const navigate = useNavigate();
+    let params = useParams();
+    const [editMode, setEditMode] = useState(false);
+
+    const [form] = Form.useForm();
 
     useEffect(() => {
         fetchCategories();
+
+        if (params.id) {
+            setEditMode(true);
+            loadProductData(params.id);
+        }
     }, []);
 
     async function fetchCategories() {
         const data = await loadCategories();
         setCategories(data || []);
     }
+    async function loadProductData(id) {
+        const product = await getProductById(id);
+        form.setFieldsValue(product);
+    }
 
     const onSubmit = async (item) => {
-        const res = await createProduct(item);
+        let res = false;
+
+        if (editMode) {
+            item.id = params.id;
+            res = await editProduct(item);
+        }
+        else {
+            res = await createProduct(item);
+        }
 
         if (!res)
-            showError('Failed to create product!');
-        else
-            showSuccess('Product created successfully!');
+            showError(`Failed to ${editMode ? "update" : "create"} product!`);
+        else {
+            showSuccess(`Product ${editMode ? "updated" : "created"} successfully!`);
+            // TODO: show success message globally
+            // navigate('/products');
+        }
     }
+    const onCancel = () => {
+        navigate(-1);
+    };
 
     return (
         <>
             {contextHolder}
-            <h2>Create New Product</h2>
+            <h2>{editMode ? "Edit Product" : "Create New Product"}</h2>
             <Form
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 14 }}
                 layout="horizontal"
                 style={{ maxWidth: 600 }}
                 onFinish={onSubmit}
+                form={form}
             >
-                <Form.Item label="Title" name="title">
+                <Form.Item label="Title" name="title" rules={[
+                    {
+                        required: true,
+                        message: 'Please input the product title!',
+                    },
+                ]}>
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="Description" name="description">
+                <Form.Item label="Description" name="description" rules={[
+                    {
+                        minLength: 10,
+                    },
+                ]}>
                     <TextArea rows={3} />
                 </Form.Item>
 
@@ -68,7 +107,13 @@ const ProductForm = () => {
                     />
                 </Form.Item>
 
-                <Form.Item label="Price" name="price" initialValue={100}>
+                <Form.Item label="Price" name="price" initialValue={100} rules={[
+                    {
+                        min: 0,
+                        type: 'number',
+                        message: 'Price must be a positive number!',
+                    },
+                ]}>
                     <InputNumber addonAfter="$" />
                 </Form.Item>
 
@@ -86,6 +131,12 @@ const ProductForm = () => {
                 <Form.Item
                     name="image"
                     label="Image URL"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input the product image URL!',
+                        },
+                    ]}
                 >
                     <Input placeholder="Enter product image URL" />
                 </Form.Item>
@@ -93,14 +144,14 @@ const ProductForm = () => {
                 <Form.Item {...tailLayout}>
                     <Space>
                         <Button type="primary" htmlType="submit">
-                            Create
+                            {editMode ? "Edit" : "Create"}
                         </Button>
-                        <Button htmlType="button">
+                        <Button htmlType="button" onClick={onCancel}>
                             Cancel
                         </Button>
                     </Space>
                 </Form.Item>
-            </Form >
+            </Form>
         </>
     );
 };
