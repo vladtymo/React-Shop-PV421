@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
     Button,
     Form,
@@ -10,6 +10,7 @@ import {
 import { createProduct, editProduct, getProductById, loadCategories } from '../services/product.service';
 import { useMessage } from '../hooks/useMessage';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useToast } from '../contexts/toast.context';
 const { TextArea } = Input;
 
 const normFile = (e) => {
@@ -26,6 +27,7 @@ const ProductForm = () => {
     const navigate = useNavigate();
     let params = useParams();
     const [editMode, setEditMode] = useState(false);
+    const { showToast } = useToast();
 
     const [form] = Form.useForm();
 
@@ -59,9 +61,11 @@ const ProductForm = () => {
         }
 
         if (!res)
-            showError(`Failed to ${editMode ? "update" : "create"} product!`);
+            // showError(`Failed to ${editMode ? "update" : "create"} product!`);
+            showToast(`Failed to ${editMode ? "update" : "create"} product!`)
         else {
-            showSuccess(`Product ${editMode ? "updated" : "created"} successfully!`);
+            // showSuccess(`Product ${editMode ? "updated" : "created"} successfully!`);
+            showToast(`Product ${editMode ? "updated" : "created"} successfully!`)
             // TODO: show success message globally
             navigate('/products');
         }
