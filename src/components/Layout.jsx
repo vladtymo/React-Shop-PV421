@@ -1,27 +1,56 @@
-import React from 'react';
+import React, { use, useContext, useEffect, useState } from 'react';
 import { Breadcrumb, Layout as LayoutAntd, Menu, theme } from 'antd';
 import {
     DatabaseFilled,
     HomeFilled,
+    LoginOutlined,
+    LogoutOutlined,
+    UserOutlined,
 } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { AccountContext } from '../contexts/account.context';
 
 const { Header, Content, Footer } = LayoutAntd;
 
-const items = [
+const appMenuItems = [
     {
-        key: '1',
+        key: '/',
         label: <Link to="/">Home</Link>,
         icon: <HomeFilled />
     },
     {
-        key: '2',
+        key: '/products',
         label: <Link to="/products">Products</Link>,
         icon: <DatabaseFilled />,
     },
 ]
 
+const anonymousMenuItems = [
+    {
+        key: '/login',
+        label: <Link to="/login">Login</Link>,
+        icon: <LoginOutlined />
+    },
+    {
+        key: '/register',
+        label: <Link to="/register">Register</Link>,
+        icon: <UserOutlined />,
+    },
+]
+const accountMenuItems = [
+    {
+        key: '/logout',
+        label: <Link to="/logout">Logout</Link>,
+        icon: <LogoutOutlined />,
+    },
+]
+
 const Layout = () => {
+
+    const location = useLocation();
+    const { email, isAuth } = useContext(AccountContext);
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -34,9 +63,19 @@ const Layout = () => {
                 <Menu
                     theme="dark"
                     mode="horizontal"
-                    defaultSelectedKeys={['1']}
-                    items={items}
+                    defaultSelectedKeys={[['1']]}
+                    selectedKeys={[location.pathname]}
+                    items={appMenuItems}
                     style={{ flex: 1, minWidth: 0 }}
+                />
+                {isAuth() && <span style={{ color: "white" }}>Hello, {email}</span>}
+                <Menu
+                    theme="dark"
+                    mode="horizontal"
+                    defaultSelectedKeys={['1']}
+                    selectedKeys={[location.pathname]}
+                    items={isAuth() ? accountMenuItems : anonymousMenuItems}
+                    style={{ flex: 1, justifyContent: "flex-end", minWidth: 0 }}
                 />
             </Header>
 

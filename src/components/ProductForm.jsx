@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
 import {
     Button,
     Form,
@@ -7,11 +6,10 @@ import {
     InputNumber,
     Select,
     Space,
-    Upload,
 } from 'antd';
 import { createProduct, editProduct, getProductById, loadCategories } from '../services/product.service';
 import { useMessage } from '../hooks/useMessage';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 const { TextArea } = Input;
 
 const normFile = (e) => {
@@ -65,7 +63,7 @@ const ProductForm = () => {
         else {
             showSuccess(`Product ${editMode ? "updated" : "created"} successfully!`);
             // TODO: show success message globally
-            // navigate('/products');
+            navigate('/products');
         }
     }
     const onCancel = () => {

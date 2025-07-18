@@ -8,6 +8,8 @@ import Home from './components/Home'
 import ProductList from './components/ProductList'
 import NoPage from './components/NoPage'
 import ProductForm from './components/ProductForm'
+import LoginForm from './components/LoginForm'
+import LogoutPage from './components/LogoutPage'
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="products" element={<ProductList />} />
           <Route path="create" element={<ProductForm />} />
           <Route path="edit/:id" element={<ProductForm />} />
+          <Route path="login" element={<LoginForm />} />
+          <Route path="logout" element={<LogoutPage />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
