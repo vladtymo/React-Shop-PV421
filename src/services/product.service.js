@@ -1,9 +1,11 @@
 import { message } from "antd";
 import axios from "axios";
 
+const api = import.meta.env.VITE_API_PATH + 'products';
+
 const deleteProduct = async (id) => {
     try {
-        const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
+        const response = await fetch(`${api}/${id}`, {
             method: 'DELETE',
         });
         if (!response.ok) {
@@ -18,7 +20,7 @@ const deleteProduct = async (id) => {
 
 const loadCategories = async () => {
     try {
-        const response = await fetch(`https://fakestoreapi.com/products/categories`);
+        const response = await fetch(`${api}/categories`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -31,7 +33,7 @@ const loadCategories = async () => {
 
 const createProduct = async (model) => {
     try {
-        const res = await axios.post(`https://fakestoreapi.com/products`, model);
+        const res = await axios.post(api, model);
         return res.data;
     } catch (error) {
         console.error('Error deleting product:', error);
@@ -41,7 +43,7 @@ const createProduct = async (model) => {
 
 const editProduct = async (model) => {
     try {
-        const res = await axios.put(`https://fakestoreapi.com/products/${model.id}`, model);
+        const res = await axios.put(`${api}/${model.id}`, model);
         return res.data;
     } catch (error) {
         console.error('Error updating product:', error);
@@ -51,7 +53,7 @@ const editProduct = async (model) => {
 
 const getProductById = async (id) => {
     try {
-        const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
+        const res = await axios.get(`${api}/${id}`);
         return res.data;
     } catch (error) {
         console.error('Error getting product by ID', error);
