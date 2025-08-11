@@ -1,9 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Card, Col, Row } from 'antd';
+import { Link } from 'react-router-dom';
+import {
+    DatabaseFilled,
+    HomeFilled,
+    LoginOutlined,
+    LogoutOutlined,
+    ShoppingCartOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
+
+const { Meta } = Card;
+
+const api = import.meta.env.VITE_API_PATH + 'products';
 
 export default function Home() {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    async function fetchProducts() {
+        const res = await fetch(api);
+        const data = await res.json();
+        setProducts(data);
+    }
+
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
-            <img width={500} src="https://img.freepik.com/free-vector/shop-with-sign-open-design_23-2148544029.jpg?semt=ais_hybrid&w=740" alt="" />
+            <Row gutter={[16, 20]}>
+                {products.map(i =>
+                    <Col className="gutter-row" span={6}>
+                        <Link to={`/details/${i.id}`}>
+                            <Card
+                                hoverable
+                                // onClick={() => window.location.href = `/products/${i.id}`}
+                                style={{ width: 240, minHeight: '100%', backgroundColor: '#f0f2f5', padding: '10px' }}
+                                cover={<img alt={i.title} src={i.image} height={260} style={{ objectFit: "contain" }} />}
+                                actions={[
+                                    <ShoppingCartOutlined
+                                        key="add-to-cart"
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            // handle add to cart logic here
+                                        }} />
+                                ]}
+                            >
+                                <Meta title={i.title} description={`${i.price}$ - ${i.category}`} />
+                            </Card>
+                        </Link>
+                    </Col>
+                )}
+            </Row>
+
+            {/* <img width={500} src="https://img.freepik.com/free-vector/shop-with-sign-open-design_23-2148544029.jpg?semt=ais_hybrid&w=740" alt="" /> */}
         </div>
     )
 }

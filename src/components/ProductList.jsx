@@ -60,7 +60,7 @@ const getColumns = (onDelete) => [
     },
 ];
 
-const api = "https://fakestoreapi.com/products";
+const api = import.meta.env.VITE_API_PATH + 'products';
 
 const ProductList = () => {
 

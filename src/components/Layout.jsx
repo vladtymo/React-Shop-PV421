@@ -5,6 +5,7 @@ import {
     HomeFilled,
     LoginOutlined,
     LogoutOutlined,
+    ShoppingCartOutlined,
     UserOutlined,
 } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
@@ -23,6 +24,11 @@ const appMenuItems = [
         key: '/products',
         label: <Link to="/products">Products</Link>,
         icon: <DatabaseFilled />,
+    },
+    {
+        key: '/cart',
+        label: <Link to="/cart">Cart</Link>,
+        icon: <ShoppingCartOutlined />,
     },
 ]
 
