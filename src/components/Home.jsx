@@ -29,14 +29,14 @@ export default function Home() {
 
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
-            <Row gutter={[16, 20]}>
+            <Row gutter={[30, 16]}>
                 {products.map(i =>
                     <Col className="gutter-row" span={6}>
                         <Link to={`/details/${i.id}`}>
                             <Card
                                 hoverable
                                 // onClick={() => window.location.href = `/products/${i.id}`}
-                                style={{ width: 240, minHeight: '100%', backgroundColor: '#f0f2f5', padding: '10px' }}
+                                style={{ minHeight: '100%', backgroundColor: '#f0f2f5', padding: '10px' }}
                                 cover={<img alt={i.title} src={i.image} height={260} style={{ objectFit: "contain" }} />}
                                 actions={[
                                     <ShoppingCartOutlined
