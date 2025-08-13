@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Card, Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import {
@@ -7,6 +7,7 @@ import {
     ShoppingCartOutlined,
 } from '@ant-design/icons';
 import { isFavProduct, toggleFavProduct } from '../services/favorites.service';
+import { FavoriteContext } from '../contexts/favorite.context';
 
 const { Meta } = Card;
 
@@ -14,6 +15,7 @@ const api = import.meta.env.VITE_API_PATH + 'products';
 
 export default function Home() {
     const [products, setProducts] = useState([]);
+    const { add, remove, isFav } = useContext(FavoriteContext);
 
     useEffect(() => {
         fetchProducts();
@@ -43,16 +45,16 @@ export default function Home() {
                                 <ShoppingCartOutlined
                                     key="add-to-cart"
                                     style={{ color: 'darkgreen' }} />,
-                                isFavProduct(i.id) ?
+                                isFav(i.id) ?
                                     <HeartFilled key="fav-no"
                                         style={{ color: '#eb2f96' }}
                                         onClick={e => {
-                                            toggleFavProduct(i.id);
+                                            remove(i.id);
                                         }} />
                                     :
                                     <HeartTwoTone twoToneColor="#eb2f96" key="fav-yes"
                                         onClick={e => {
-                                            toggleFavProduct(i.id);
+                                            add(i.id);
                                         }} />
                             ]}
                         >
