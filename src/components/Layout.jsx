@@ -2,6 +2,7 @@ import React, { use, useContext, useEffect, useState } from 'react';
 import { Breadcrumb, Layout as LayoutAntd, Menu, theme } from 'antd';
 import {
     DatabaseFilled,
+    HeartFilled,
     HomeFilled,
     LoginOutlined,
     LogoutOutlined,
@@ -11,26 +12,9 @@ import {
 import { Link, Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { AccountContext } from '../contexts/account.context';
+import { FavoriteContext } from '../contexts/favorite.context';
 
 const { Header, Content, Footer } = LayoutAntd;
-
-const appMenuItems = [
-    {
-        key: '/',
-        label: <Link to="/">Home</Link>,
-        icon: <HomeFilled />
-    },
-    {
-        key: '/products',
-        label: <Link to="/products">Products</Link>,
-        icon: <DatabaseFilled />,
-    },
-    {
-        key: '/cart',
-        label: <Link to="/cart">Cart</Link>,
-        icon: <ShoppingCartOutlined />,
-    },
-]
 
 const anonymousMenuItems = [
     {
@@ -56,6 +40,31 @@ const Layout = () => {
 
     const location = useLocation();
     const { email, isAuth } = useContext(AccountContext);
+    const { getCount } = useContext(FavoriteContext);
+
+
+    const appMenuItems = [
+        {
+            key: '/',
+            label: <Link to="/">Home</Link>,
+            icon: <HomeFilled />
+        },
+        {
+            key: '/products',
+            label: <Link to="/products">Products</Link>,
+            icon: <DatabaseFilled />,
+        },
+        {
+            key: '/cart',
+            label: <Link to="/cart">Cart</Link>,
+            icon: <ShoppingCartOutlined />,
+        },
+        {
+            key: '/favorites',
+            label: <Link to="/favorites">Favorites ({getCount()})</Link>,
+            icon: <HeartFilled />,
+        },
+    ]
 
     const {
         token: { colorBgContainer, borderRadiusLG },

@@ -7,7 +7,8 @@ export const FavoriteContext = createContext({
     // methods
     add: (id) => null,
     remove: (id) => null,
-    isFav: (id) => null
+    isFav: (id) => null,
+    getCount: () => null
 });
 
 export const FavoriteProvider = ({ children }) => {
@@ -27,12 +28,13 @@ export const FavoriteProvider = ({ children }) => {
         updateIds();
     }
     const isFav = (id) => ids.includes(id);
+    const getCount = () => ids.length;
 
     function updateIds() {
         setIds(getFavProducts());
     }
 
-    const value = { ids, add, remove, isFav };
+    const value = { ids, add, remove, isFav, getCount };
 
     return <FavoriteContext.Provider value={value}>{children}</FavoriteContext.Provider>
 }
