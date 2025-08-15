@@ -1,14 +1,18 @@
 import React, { useContext } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { AccountContext } from '../contexts/account.context';
+import { useDispatch } from 'react-redux';
+import { setEmail } from '../redux/account/account.actions';
+// import { AccountContext } from '../contexts/account.context';
 
 const LoginForm = () => {
 
-    const { setEmail } = useContext(AccountContext);
+    const dispatch = useDispatch();
+    // const { setEmail } = useContext(AccountContext);
 
     const onFinish = values => {
         console.log('Success:', values);
-        setEmail(values.username)
+        // setEmail(values.username)
+        dispatch(setEmail(values.username));
     };
 
     return (

@@ -11,8 +11,10 @@ import {
 } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { AccountContext } from '../contexts/account.context';
+// import { AccountContext } from '../contexts/account.context';
 import { FavoriteContext } from '../contexts/favorite.context';
+import { useSelector } from 'react-redux';
+import { selectEmail, selectIsAuth } from '../redux/account/account.selectors';
 
 const { Header, Content, Footer } = LayoutAntd;
 
@@ -39,7 +41,11 @@ const accountMenuItems = [
 const Layout = () => {
 
     const location = useLocation();
-    const { email, isAuth } = useContext(AccountContext);
+
+    // const { email, isAuth } = useContext(AccountContext);
+    const email = useSelector(selectEmail);
+    const isAuth = useSelector(selectIsAuth);
+
     const { getCount } = useContext(FavoriteContext);
 
 
@@ -83,13 +89,14 @@ const Layout = () => {
                     items={appMenuItems}
                     style={{ flex: 1, minWidth: 0 }}
                 />
-                {isAuth() && <span style={{ color: "white" }}>Hello, {email}</span>}
+                {isAuth && <span style={{ color: "white" }}>Hello, {email}</span>}
                 <Menu
                     theme="dark"
                     mode="horizontal"
                     defaultSelectedKeys={['1']}
                     selectedKeys={[location.pathname]}
-                    items={isAuth() ? accountMenuItems : anonymousMenuItems}
+                    items={isAuth ? accountMenuItems : anonymousMenuItems}
+                    // items={anonymousMenuItems}
                     style={{ flex: 1, justifyContent: "flex-end", minWidth: 0 }}
                 />
             </Header>

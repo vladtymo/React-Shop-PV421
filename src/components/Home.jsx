@@ -31,7 +31,7 @@ export default function Home() {
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <Row gutter={[30, 16]}>
                 {products.map(i =>
-                    <Col className="gutter-row" span={6}>
+                    <Col key={i.id} className="gutter-row" span={6}>
                         <Card
                             hoverable
                             // onClick={() => window.location.href = `/products/${i.id}`}
