@@ -1,21 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Layout from './components/Layout'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './components/Home'
-import ProductList from './components/ProductList'
-import NoPage from './components/NoPage'
-import ProductForm from './components/ProductForm'
-import LoginForm from './components/LoginForm'
-import LogoutPage from './components/LogoutPage'
+import "./App.css";
+import Layout from "./components/Layout";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import ProductList from "./components/ProductList";
+import NoPage from "./components/NoPage";
+import ProductForm from "./components/ProductForm";
+import LoginForm from "./components/LoginForm";
+import LogoutPage from "./components/LogoutPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="products" element={<ProductList />} />
           <Route path="create" element={<ProductForm />} />
@@ -26,7 +23,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
