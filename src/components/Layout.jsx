@@ -1,4 +1,4 @@
-import React, { use, useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Breadcrumb, Layout as LayoutAntd, Menu, theme } from 'antd';
 import {
     DatabaseFilled,
@@ -46,7 +46,7 @@ const Layout = () => {
     const email = useSelector(selectEmail);
     const isAuth = useSelector(selectIsAuth);
 
-    const { getCount } = useContext(FavoriteContext);
+    const { getCount, isPremiumUser } = useContext(FavoriteContext);
 
 
     const appMenuItems = [
@@ -90,6 +90,9 @@ const Layout = () => {
                     style={{ flex: 1, minWidth: 0 }}
                 />
                 {isAuth && <span style={{ color: "white" }}>Hello, {email}</span>}
+                <span style={{ color: "white", marginLeft: '16px' }}>
+                    Status: {isPremiumUser ? 'Premium' : 'Standard'}
+                </span>
                 <Menu
                     theme="dark"
                     mode="horizontal"
