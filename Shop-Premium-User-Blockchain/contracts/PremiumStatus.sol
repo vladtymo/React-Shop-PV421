@@ -8,6 +8,7 @@ contract PremiumStatus {
     mapping(address => bool) public isPremium;
 
     event PremiumPurchased(address indexed user, uint256 amount, uint256 when);
+    event PremiumCancelled(address indexed user, uint256 when);
     event Withdrawal(uint amount, uint when);
 
     modifier onlyOwner() {
@@ -25,6 +26,15 @@ contract PremiumStatus {
 
         isPremium[msg.sender] = true;
         emit PremiumPurchased(msg.sender, msg.value, block.timestamp);
+
+        return true;
+    }
+
+    function cancelPremiumStatus() public returns (bool) {
+        require(isPremium[msg.sender], "User does not have premium status");
+
+        isPremium[msg.sender] = false;
+        emit PremiumCancelled(msg.sender, block.timestamp);
 
         return true;
     }

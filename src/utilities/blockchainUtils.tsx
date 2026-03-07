@@ -1,11 +1,30 @@
 import { BrowserProvider, Contract, ethers, Signer } from "ethers";
 
-const contractAddress = "0x09F560573ae9a01044c6ED7943d8A18609973F81"; // Replace with your contract address
+const contractAddress = "0x3acF611f8A3859b7AD99242DDa3d9F600dD0BC8F"; // Replace with your contract address
 const abi = [
     {
       "inputs": [],
       "stateMutability": "payable",
       "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "when",
+          "type": "uint256"
+        }
+      ],
+      "name": "PremiumCancelled",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -75,6 +94,19 @@ const abi = [
         }
       ],
       "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "cancelPremiumStatus",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -199,6 +231,23 @@ export const buyPremiumStatus = async (): Promise<boolean> => {
   return result ?? false;
 };
 
+export const cancelPremiumStatus = async (): Promise<boolean> => {
+  const result = await withContract<boolean>(async (contract) => {
+    const operationStatus = await contract.cancelPremiumStatus.staticCall();
+
+    if (!operationStatus) {
+      return false;
+    }
+
+    const tx = await contract.cancelPremiumStatus();
+    const receipt = await tx.wait();
+
+    return operationStatus && receipt?.status === 1;
+  });
+
+  return result ?? false;
+};
+
 export const getPremiumStatus = async (): Promise<boolean> => {
   const result = await withContract<boolean>(async (contract) => {
     const signer = await getSigner();
@@ -212,4 +261,3 @@ export const getPremiumStatus = async (): Promise<boolean> => {
 
   return result ?? false;
 };
-

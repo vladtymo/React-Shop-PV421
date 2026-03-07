@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { Button, Card, Col, Row } from 'antd';
 import { HeartFilled, HeartTwoTone, ShoppingCartOutlined } from '@ant-design/icons';
 import { FavoriteContext } from '../contexts/favorite.context';
-import { buyPremiumStatus } from '../utilities/blockchainUtils';
+import { buyPremiumStatus, cancelPremiumStatus } from '../utilities/blockchainUtils';
 
 const { Meta } = Card;
 const FAVORITE_LIMIT = 4;
@@ -30,6 +30,18 @@ export default function FavoriteList() {
         alert('Premium purchase failed. Please try again.');
     }
 
+    async function handleCancelPremium() {
+        const isSuccess = await cancelPremiumStatus();
+
+        if (isSuccess) {
+            await refreshPremiumStatus();
+            alert('Premium status cancelled successfully!');
+            return;
+        }
+
+        alert('Premium cancel failed. Please try again.');
+    }
+
     async function fetchProducts() {
         const res = await fetch(api);
         const data = await res.json();
@@ -46,6 +58,11 @@ export default function FavoriteList() {
             {reachedFavoriteLimit && (
                 <Button type="primary" style={{ marginBottom: '16px' }} onClick={handleBuyPremium}>
                     Buy Premium Status
+                </Button>
+            )}
+            {isPremiumUser && (
+                <Button style={{ marginBottom: '16px', marginLeft: '8px' }} onClick={handleCancelPremium}>
+                    Cancel Premium Status
                 </Button>
             )}
 
